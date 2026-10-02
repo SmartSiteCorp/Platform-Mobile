@@ -27,6 +27,18 @@ L'APK debug est généré dans `app/build/outputs/apk/debug/app-debug.apk`.
 
 Ou ouvrez le dossier `Android/` dans Android Studio et lancez la configuration `app`.
 
+## Fonctionnalités (9 écrans)
+
+- **Tableau de bord** : salutation, 4 statistiques, tâches récentes, raccourcis chantiers
+- **Chantiers** : recherche + filtre statut, création de chantier (dialogue + date pickers)
+- **Détail chantier** : stats par chantier, onglets Tâches / Médias / Plans
+- **Tâches** : recherche + filtres statut/priorité, création de tâche
+- **Détail tâche** : workflow ouvrier (démarrer → valider avec photo / signaler blocage)
+- **Vue Drone** : flux vidéo simulé, télémétrie, machine à états des commandes, partage de flux
+- **Médiathèque** : grille filtrable, dialogue détail, upload local
+- **Annotations** : recherche, création avec sélecteur de couleur
+- **Mon profil** : badge de rôle, édition téléphone/spécialité
+
 ## Structure du projet
 
 ```

@@ -96,8 +96,8 @@ fun SmartSiteApp() {
                 }
                 NavConfig.drawerItems(user.role).forEach { item ->
                     NavigationDrawerItem(
-                        label = { Text(item.label) },
-                        icon = { Icon(item.icon, contentDescription = null) },
+                        label = { Text(item.label, color = Color.White) },
+                        icon = { Icon(item.icon, contentDescription = null, tint = Color.White) },
                         selected = currentRoute == item.route,
                         onClick = {
                             scope.launch { drawerState.close() }
@@ -106,10 +106,7 @@ fun SmartSiteApp() {
                         modifier = Modifier.padding(horizontal = 12.dp),
                         colors = NavigationDrawerItemDefaults.colors(
                             selectedContainerColor = Orange,
-                            selectedTextColor = Color.White,
-                            selectedIconColor = Color.White,
-                            unselectedTextColor = Color.White.copy(alpha = 0.85f),
-                            unselectedIconColor = Color.White.copy(alpha = 0.85f)
+                            unselectedContainerColor = Color.Transparent
                         )
                     )
                 }
