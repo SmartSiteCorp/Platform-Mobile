@@ -17,11 +17,13 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      # ubuntu-latest runners ship a full Android SDK; we only add what we need.
+      # ubuntu-latest runners ship a full Android SDK under $ANDROID_HOME
+      # (sdkmanager is not on PATH, call it explicitly).
       - name: Install Android SDK components
         run: |
-          yes | sdkmanager --licenses > /dev/null
-          sdkmanager "platforms;android-37" "build-tools;36.0.0"
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMANAGER" --licenses > /dev/null
+          "$SDKMANAGER" "platforms;android-37" "build-tools;36.0.0"
 
       - name: Build debug APK
         working-directory: Android
