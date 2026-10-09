@@ -7,7 +7,7 @@ proviennent de dépôts mock en mémoire (pas de backend, pas de permission rés
 ## Prérequis
 
 - JDK 17+ (21 recommandé)
-- Android SDK avec `platforms;android-37` et `build-tools;36.0.0`
+- Android SDK avec `platforms;android-36` et `build-tools;36.0.0`
 - Android Studio (Rabbit ou plus récent) recommandé pour le développement
 
 ## Build
