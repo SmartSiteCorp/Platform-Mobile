@@ -4,6 +4,7 @@ import com.smartsite.app.data.model.Annotation
 import com.smartsite.app.data.model.AnnotationSupport
 import com.smartsite.app.data.model.AnnotationType
 import com.smartsite.app.data.model.UserRole
+import com.smartsite.app.data.repository.AnnotationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +14,7 @@ import java.util.UUID
 /**
  * In-memory replacement for the Base44 SDK `Annotation` entity.
  */
-object AnnotationRepository {
+object MockAnnotationRepository : AnnotationRepository {
 
     private val _annotations = MutableStateFlow(
         listOf(
@@ -85,9 +86,9 @@ object AnnotationRepository {
             )
         )
     )
-    val annotations: StateFlow<List<Annotation>> = _annotations.asStateFlow()
+    override val annotations: StateFlow<List<Annotation>> = _annotations.asStateFlow()
 
-    fun create(
+    override fun create(
         type: AnnotationType,
         content: String,
         support: AnnotationSupport,

@@ -3,6 +3,7 @@ package com.smartsite.app.data.mock
 import com.smartsite.app.R
 import com.smartsite.app.data.model.Media
 import com.smartsite.app.data.model.MediaType
+import com.smartsite.app.data.repository.MediaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,7 @@ import java.util.UUID
 /**
  * In-memory replacement for the Base44 SDK `Media` entity.
  */
-object MediaRepository {
+object MockMediaRepository : MediaRepository {
 
     private val _media = MutableStateFlow(
         listOf(
@@ -74,9 +75,9 @@ object MediaRepository {
             )
         )
     )
-    val media: StateFlow<List<Media>> = _media.asStateFlow()
+    override val media: StateFlow<List<Media>> = _media.asStateFlow()
 
-    fun create(
+    override fun create(
         fileUri: String?,
         type: MediaType,
         caption: String,

@@ -63,8 +63,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.smartsite.app.data.mock.MediaRepository
-import com.smartsite.app.data.mock.SiteRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.data.model.Media
 import com.smartsite.app.data.model.MediaType
 import com.smartsite.app.data.model.Site
@@ -82,8 +81,8 @@ import com.smartsite.app.util.icon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MediaGalleryScreen() {
-    val mediaList by MediaRepository.media.collectAsState()
-    val sites by SiteRepository.sites.collectAsState()
+    val mediaList by Repositories.media.media.collectAsState()
+    val sites by Repositories.sites.sites.collectAsState()
 
     var searchQuery by remember { mutableStateOf("") }
     var selectedType by remember { mutableStateOf<MediaType?>(null) }
@@ -474,7 +473,7 @@ private fun UploadMediaDialog(sites: List<Site>, onDismiss: () -> Unit) {
                     val uri = pickedUri
                     val site = selectedSite
                     if (uri != null && site != null) {
-                        MediaRepository.create(
+                        Repositories.media.create(
                             fileUri = uri.toString(),
                             type = uploadType,
                             caption = caption.trim(),

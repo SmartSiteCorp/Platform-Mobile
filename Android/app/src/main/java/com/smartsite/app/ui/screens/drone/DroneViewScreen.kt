@@ -50,8 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.smartsite.app.data.mock.DroneRepository
-import com.smartsite.app.data.mock.MockAuthRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.data.model.DroneSession
 import com.smartsite.app.data.model.DroneStatus
 import com.smartsite.app.data.model.UserRole
@@ -69,8 +68,8 @@ import java.util.Locale
 
 @Composable
 fun DroneViewScreen() {
-    val session by DroneRepository.session.collectAsState()
-    val user by MockAuthRepository.currentUser.collectAsState()
+    val session by Repositories.drone.session.collectAsState()
+    val user by Repositories.auth.currentUser.collectAsState()
 
     Column(
         modifier = Modifier
@@ -85,7 +84,7 @@ fun DroneViewScreen() {
 
         val current = session
         if (current == null) {
-            NoSessionCard(onCreateSession = { DroneRepository.createSession(user.email) })
+            NoSessionCard(onCreateSession = { Repositories.drone.createSession(user.email) })
         } else {
             VideoPanel(
                 session = current,
@@ -409,33 +408,33 @@ private fun CommandsCard(session: DroneSession) {
         ) {
             when (session.status) {
                 DroneStatus.IDLE -> CommandButton("Lancer mission", Modifier.weight(1f)) {
-                    DroneRepository.update {
+                    Repositories.drone.update {
                         it.copy(status = DroneStatus.FLYING, altitude = 25f)
                     }
                 }
                 DroneStatus.FLYING -> {
                     CommandButton("Pause", Modifier.weight(1f), outlined = true) {
-                        DroneRepository.update { it.copy(status = DroneStatus.PAUSED) }
+                        Repositories.drone.update { it.copy(status = DroneStatus.PAUSED) }
                     }
                     CommandButton("RTH", Modifier.weight(1f)) {
-                        DroneRepository.update { it.copy(status = DroneStatus.RETURNING) }
+                        Repositories.drone.update { it.copy(status = DroneStatus.RETURNING) }
                     }
                 }
                 DroneStatus.PAUSED -> {
                     CommandButton("Reprendre", Modifier.weight(1f), outlined = true) {
-                        DroneRepository.update { it.copy(status = DroneStatus.FLYING) }
+                        Repositories.drone.update { it.copy(status = DroneStatus.FLYING) }
                     }
                     CommandButton("RTH", Modifier.weight(1f)) {
-                        DroneRepository.update { it.copy(status = DroneStatus.RETURNING) }
+                        Repositories.drone.update { it.copy(status = DroneStatus.RETURNING) }
                     }
                 }
                 DroneStatus.RETURNING -> CommandButton("Confirmer atterrissage", Modifier.weight(1f)) {
-                    DroneRepository.update {
+                    Repositories.drone.update {
                         it.copy(status = DroneStatus.LANDED, altitude = 0f)
                     }
                 }
                 DroneStatus.LANDED -> CommandButton("Réinitialiser", Modifier.weight(1f)) {
-                    DroneRepository.update { it.copy(status = DroneStatus.IDLE) }
+                    Repositories.drone.update { it.copy(status = DroneStatus.IDLE) }
                 }
             }
         }
@@ -453,7 +452,7 @@ private fun CommandsCard(session: DroneSession) {
             Switch(
                 checked = session.streamShared,
                 onCheckedChange = { shared ->
-                    DroneRepository.update { it.copy(streamShared = shared) }
+                    Repositories.drone.update { it.copy(streamShared = shared) }
                 },
                 colors = SwitchDefaults.colors(checkedTrackColor = Orange)
             )

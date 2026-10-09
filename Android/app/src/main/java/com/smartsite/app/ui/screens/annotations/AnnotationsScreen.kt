@@ -52,9 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.smartsite.app.data.mock.AnnotationRepository
-import com.smartsite.app.data.mock.MockAuthRepository
-import com.smartsite.app.data.mock.SiteRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.data.model.Annotation
 import com.smartsite.app.data.model.AnnotationSupport
 import com.smartsite.app.data.model.AnnotationType
@@ -100,9 +98,9 @@ private fun AnnotationSupport.frenchLabel(): String = when (this) {
 
 @Composable
 fun AnnotationsScreen() {
-    val annotations by AnnotationRepository.annotations.collectAsState()
-    val sites by SiteRepository.sites.collectAsState()
-    val user by MockAuthRepository.currentUser.collectAsState()
+    val annotations by Repositories.annotations.annotations.collectAsState()
+    val sites by Repositories.sites.sites.collectAsState()
+    val user by Repositories.auth.currentUser.collectAsState()
 
     var searchQuery by remember { mutableStateOf("") }
     var showCreateDialog by remember { mutableStateOf(false) }
@@ -187,7 +185,7 @@ fun AnnotationsScreen() {
             sites = sites,
             onDismiss = { showCreateDialog = false },
             onConfirm = { site, type, support, content, zone, color ->
-                AnnotationRepository.create(
+                Repositories.annotations.create(
                     type = type,
                     content = content,
                     support = support,

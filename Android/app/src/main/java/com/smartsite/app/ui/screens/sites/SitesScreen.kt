@@ -56,7 +56,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.smartsite.app.data.model.Site
 import com.smartsite.app.data.model.SiteStatus
-import com.smartsite.app.data.mock.SiteRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.ui.components.EmptyState
 import com.smartsite.app.ui.components.LocalImage
 import com.smartsite.app.ui.components.StatusBadge
@@ -75,7 +75,7 @@ import java.time.LocalDate
 
 @Composable
 fun SitesScreen(onSiteClick: (String) -> Unit) {
-    val sites by SiteRepository.sites.collectAsState()
+    val sites by Repositories.sites.sites.collectAsState()
     var search by remember { mutableStateOf("") }
     var statusFilter by remember { mutableStateOf<SiteStatus?>(null) }
     var showCreateDialog by remember { mutableStateOf(false) }
@@ -153,7 +153,7 @@ fun SitesScreen(onSiteClick: (String) -> Unit) {
         CreateSiteDialog(
             onDismiss = { showCreateDialog = false },
             onCreate = { name, address, description, start, end ->
-                SiteRepository.create(name, address, description, start, end)
+                Repositories.sites.create(name, address, description, start, end)
                 showCreateDialog = false
             }
         )

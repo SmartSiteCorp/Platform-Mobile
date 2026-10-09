@@ -3,6 +3,7 @@ package com.smartsite.app.data.mock
 import com.smartsite.app.R
 import com.smartsite.app.data.model.Site
 import com.smartsite.app.data.model.SiteStatus
+import com.smartsite.app.data.repository.SiteRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +14,7 @@ import java.util.UUID
  * In-memory replacement for the Base44 SDK `Site` entity.
  * All mutations update the StateFlow immediately; nothing is persisted.
  */
-object SiteRepository {
+object MockSiteRepository : SiteRepository {
 
     private val _sites = MutableStateFlow(
         listOf(
@@ -85,11 +86,11 @@ object SiteRepository {
             )
         )
     )
-    val sites: StateFlow<List<Site>> = _sites.asStateFlow()
+    override val sites: StateFlow<List<Site>> = _sites.asStateFlow()
 
-    fun getById(id: String): Site? = _sites.value.firstOrNull { it.id == id }
+    override fun getById(id: String): Site? = _sites.value.firstOrNull { it.id == id }
 
-    fun create(
+    override fun create(
         name: String,
         address: String,
         description: String,

@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.smartsite.app.data.mock.MockAuthRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.ui.components.BrandLogo
 import com.smartsite.app.ui.theme.AccentRed
 import com.smartsite.app.ui.theme.NavInactive
@@ -68,7 +68,7 @@ fun SmartSiteApp() {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val user by MockAuthRepository.currentUser.collectAsState()
+    val user by Repositories.auth.currentUser.collectAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
