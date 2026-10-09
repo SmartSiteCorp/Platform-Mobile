@@ -52,9 +52,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.smartsite.app.data.mock.MockAuthRepository
-import com.smartsite.app.data.mock.SiteRepository
-import com.smartsite.app.data.mock.TaskRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.data.model.Task
 import com.smartsite.app.data.model.TaskPriority
 import com.smartsite.app.data.model.TaskStatus
@@ -89,9 +87,9 @@ private fun TaskPriority.frenchLabel(): String = when (this) {
 
 @Composable
 fun TasksScreen(onTaskClick: (String) -> Unit) {
-    val user by MockAuthRepository.currentUser.collectAsState()
-    val tasks by TaskRepository.tasks.collectAsState()
-    val sites by SiteRepository.sites.collectAsState()
+    val user by Repositories.auth.currentUser.collectAsState()
+    val tasks by Repositories.tasks.tasks.collectAsState()
+    val sites by Repositories.sites.sites.collectAsState()
 
     var query by remember { mutableStateOf("") }
     var statusFilter by remember { mutableStateOf<TaskStatus?>(null) }
@@ -310,7 +308,7 @@ private fun <T> FilterDropdown(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CreateTaskDialog(onDismiss: () -> Unit) {
-    val sites by SiteRepository.sites.collectAsState()
+    val sites by Repositories.sites.sites.collectAsState()
 
     var title by remember { mutableStateOf("") }
     var selectedSiteId by remember { mutableStateOf<String?>(null) }
@@ -394,7 +392,7 @@ private fun CreateTaskDialog(onDismiss: () -> Unit) {
             Button(
                 onClick = {
                     val siteId = selectedSiteId ?: return@Button
-                    TaskRepository.create(
+                    Repositories.tasks.create(
                         title = title.trim(),
                         siteId = siteId,
                         description = description.trim(),

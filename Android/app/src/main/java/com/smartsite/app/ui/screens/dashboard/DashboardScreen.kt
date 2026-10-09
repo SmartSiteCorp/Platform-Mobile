@@ -39,9 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.smartsite.app.data.mock.MockAuthRepository
-import com.smartsite.app.data.mock.SiteRepository
-import com.smartsite.app.data.mock.TaskRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.data.model.Site
 import com.smartsite.app.data.model.SiteStatus
 import com.smartsite.app.data.model.Task
@@ -69,9 +67,9 @@ fun DashboardScreen(
     onSeeAllTasks: () -> Unit,
     onSeeAllSites: () -> Unit
 ) {
-    val user by MockAuthRepository.currentUser.collectAsState()
-    val tasks by TaskRepository.tasks.collectAsState()
-    val sites by SiteRepository.sites.collectAsState()
+    val user by Repositories.auth.currentUser.collectAsState()
+    val tasks by Repositories.tasks.tasks.collectAsState()
+    val sites by Repositories.sites.sites.collectAsState()
 
     val firstName = user.fullName.substringBefore(" ")
     val activeSites = sites.count { it.status == SiteStatus.IN_PROGRESS }

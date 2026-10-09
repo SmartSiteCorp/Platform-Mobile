@@ -52,9 +52,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
-import com.smartsite.app.data.mock.MockAuthRepository
-import com.smartsite.app.data.mock.SiteRepository
-import com.smartsite.app.data.mock.TaskRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.data.model.Task
 import com.smartsite.app.data.model.TaskStatus
 import com.smartsite.app.ui.components.LocalImage
@@ -77,9 +75,9 @@ fun TaskDetailScreen(
     taskId: String,
     onBack: () -> Unit
 ) {
-    val tasks by TaskRepository.tasks.collectAsState()
-    val sites by SiteRepository.sites.collectAsState()
-    val user by MockAuthRepository.currentUser.collectAsState()
+    val tasks by Repositories.tasks.tasks.collectAsState()
+    val sites by Repositories.sites.sites.collectAsState()
+    val user by Repositories.auth.currentUser.collectAsState()
     val task = tasks.firstOrNull { it.id == taskId }
 
     var showValidationDialog by remember { mutableStateOf(false) }
@@ -137,7 +135,7 @@ fun TaskDetailScreen(
                     TaskStatus.PENDING -> {
                         Button(
                             onClick = {
-                                TaskRepository.update(task.copy(status = TaskStatus.IN_PROGRESS))
+                                Repositories.tasks.update(task.copy(status = TaskStatus.IN_PROGRESS))
                             },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(containerColor = AccentBlue)
@@ -185,7 +183,7 @@ fun TaskDetailScreen(
             confirmColor = AccentGreen,
             onDismiss = { showValidationDialog = false },
             onConfirm = { comment, photoUri ->
-                TaskRepository.update(
+                Repositories.tasks.update(
                     task.copy(
                         status = TaskStatus.COMPLETED,
                         completionComment = comment,
@@ -206,7 +204,7 @@ fun TaskDetailScreen(
             confirmColor = AccentRed,
             onDismiss = { showBlockingDialog = false },
             onConfirm = { reason, photoUri ->
-                TaskRepository.update(
+                Repositories.tasks.update(
                     task.copy(
                         status = TaskStatus.BLOCKED,
                         blockingReason = reason,

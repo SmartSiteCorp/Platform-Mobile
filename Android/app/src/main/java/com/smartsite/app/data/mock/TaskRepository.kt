@@ -3,6 +3,7 @@ package com.smartsite.app.data.mock
 import com.smartsite.app.data.model.Task
 import com.smartsite.app.data.model.TaskPriority
 import com.smartsite.app.data.model.TaskStatus
+import com.smartsite.app.data.repository.TaskRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,7 @@ import java.util.UUID
 /**
  * In-memory replacement for the Base44 SDK `Task` entity.
  */
-object TaskRepository {
+object MockTaskRepository : TaskRepository {
 
     private val _tasks = MutableStateFlow(
         listOf(
@@ -109,11 +110,11 @@ object TaskRepository {
             )
         )
     )
-    val tasks: StateFlow<List<Task>> = _tasks.asStateFlow()
+    override val tasks: StateFlow<List<Task>> = _tasks.asStateFlow()
 
-    fun getById(id: String): Task? = _tasks.value.firstOrNull { it.id == id }
+    override fun getById(id: String): Task? = _tasks.value.firstOrNull { it.id == id }
 
-    fun create(
+    override fun create(
         title: String,
         siteId: String,
         description: String,
@@ -138,7 +139,7 @@ object TaskRepository {
     }
 
     /** Replaces the task with the same id. */
-    fun update(task: Task) {
+    override fun update(task: Task) {
         _tasks.value = _tasks.value.map { if (it.id == task.id) task else it }
     }
 }

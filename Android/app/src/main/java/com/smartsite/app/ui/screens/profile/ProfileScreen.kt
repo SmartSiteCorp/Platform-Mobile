@@ -43,7 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.smartsite.app.data.mock.MockAuthRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.data.model.UserRole
 import com.smartsite.app.ui.theme.AccentAmber
 import com.smartsite.app.ui.theme.AccentBlue
@@ -72,7 +72,7 @@ private fun roleTint(role: UserRole): Color = when (role) {
 
 @Composable
 fun ProfileScreen() {
-    val user by MockAuthRepository.currentUser.collectAsState()
+    val user by Repositories.auth.currentUser.collectAsState()
     val scope = rememberCoroutineScope()
 
     var phone by remember(user.phone) { mutableStateOf(user.phone) }
@@ -206,7 +206,7 @@ fun ProfileScreen() {
                         scope.launch {
                             saving = true
                             delay(600)
-                            MockAuthRepository.update(
+                            Repositories.auth.update(
                                 user.copy(phone = phone.trim(), specialty = specialty.trim())
                             )
                             saving = false

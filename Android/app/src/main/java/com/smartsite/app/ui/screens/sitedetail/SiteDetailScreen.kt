@@ -49,9 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.smartsite.app.data.model.Site
 import com.smartsite.app.data.model.TaskStatus
-import com.smartsite.app.data.mock.MediaRepository
-import com.smartsite.app.data.mock.SiteRepository
-import com.smartsite.app.data.mock.TaskRepository
+import com.smartsite.app.data.repository.Repositories
 import com.smartsite.app.ui.components.EmptyState
 import com.smartsite.app.ui.components.LocalImage
 import com.smartsite.app.ui.components.PriorityBadge
@@ -76,9 +74,9 @@ fun SiteDetailScreen(
     onBack: () -> Unit,
     onTaskClick: (String) -> Unit
 ) {
-    val sites by SiteRepository.sites.collectAsState()
-    val tasks by TaskRepository.tasks.collectAsState()
-    val media by MediaRepository.media.collectAsState()
+    val sites by Repositories.sites.sites.collectAsState()
+    val tasks by Repositories.tasks.tasks.collectAsState()
+    val media by Repositories.media.media.collectAsState()
 
     val site = sites.firstOrNull { it.id == siteId }
 
