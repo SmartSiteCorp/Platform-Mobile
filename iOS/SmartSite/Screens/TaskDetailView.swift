@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import PhotosUI
 
 /// Task detail: header card, assignee workflow (start / validate / report a
