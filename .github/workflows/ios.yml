@@ -34,3 +34,25 @@ jobs:
           name: SmartSite-iphonesimulator
           path: iOS/build/Build/Products/Debug-iphonesimulator/SmartSite.app
           if-no-files-found: ignore
+
+      - name: Smoke test — boot simulator, install, launch
+        working-directory: iOS
+        run: |
+          set -e
+          RUNTIME=$(xcrun simctl list runtimes -j | python3 -c "import json,sys; rs=[r for r in json.load(sys.stdin)['runtimes'] if r['platform']=='iOS' and r['isAvailable']]; print(rs[-1]['identifier'])")
+          DEVICE_ID=$(xcrun simctl create ci-iphone com.apple.CoreSimulator.SimDeviceType.iPhone-16 "$RUNTIME")
+          xcrun simctl boot "$DEVICE_ID"
+          xcrun simctl install "$DEVICE_ID" build/Build/Products/Debug-iphonesimulator/SmartSite.app
+          xcrun simctl launch "$DEVICE_ID" com.smartsite.app
+          sleep 8
+          xcrun simctl io "$DEVICE_ID" screenshot dashboard.png
+          # Crash check: app must still be running after launch
+          xcrun simctl spawn "$DEVICE_ID" launchctl list | grep -q com.smartsite.app || { echo "app not running after launch"; exit 1; }
+          xcrun simctl shutdown "$DEVICE_ID"
+
+      - name: Upload launch screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: smartsite-launch-screenshot
+          path: iOS/dashboard.png
+          if-no-files-found: error
